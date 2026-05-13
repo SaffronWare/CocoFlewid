@@ -1,0 +1,4 @@
+C:/SaffronWare/CocoFluidDAC/out/build/x64-debug/CMakeFiles/GLAD.dir
+C:/SaffronWare/CocoFluidDAC/out/build/x64-debug/CMakeFiles/CocoFluid.dir
+C:/SaffronWare/CocoFluidDAC/out/build/x64-debug/CMakeFiles/edit_cache.dir
+C:/SaffronWare/CocoFluidDAC/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
