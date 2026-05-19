@@ -33,10 +33,12 @@ private:
 	GLFWwindow* window;
 
 public:
+	ContextStorageTemplate* storage;
+
 	Window(unsigned int GL_VERSION_MAJOR = 0, unsigned int GL_VERSION_MINOR = 0, bool(*loop)(Window*)=nullptr);
 	~Window();
 
-	GLContext* Initialize();
+	GLContext* Initialize(ContextStorageTemplate* storage);
 	void SetCallback(void (*new_err_callback)(int,const char*));
 	void Run();
 

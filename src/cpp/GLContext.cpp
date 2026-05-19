@@ -1,5 +1,10 @@
 #include "GLContext.h"
 
+
+ContextStorageTemplate::ContextStorageTemplate() {}
+
+ContextStorageTemplate::~ContextStorageTemplate() {}
+
 GLContext::GLContext(){}
 
 GLContext::~GLContext(){}
@@ -14,3 +19,4 @@ bool GLContext::Initialize()
 
 	return true;
 }
+

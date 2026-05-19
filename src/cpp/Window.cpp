@@ -50,7 +50,7 @@ Window::~Window()
 	
 }
 
-GLContext* Window::Initialize()
+GLContext* Window::Initialize(ContextStorageTemplate* storage)
 {
 
 
@@ -70,6 +70,8 @@ GLContext* Window::Initialize()
 	if (context->Initialize())
 		return context;
 	return nullptr;
+
+	this->storage = storage;
 
 }
 
