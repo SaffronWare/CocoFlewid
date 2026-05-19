@@ -26,7 +26,7 @@ add_library(GLFW STATIC IMPORTED)
 set_target_properties(GLFW PROPERTIES IMPORTED_LOCATION  "${LIB_DIR}/glfw-3.4/lib-vc-2022/glfw3.lib" )
 target_include_directories(GLFW INTERFACE "${LIB_DIR}/glfw-3.4/include")
 
-add_library(GLAD "${LIB_DIR}/OpenGL/src/glad.c")
+add_library(GLAD "${LIB_DIR}/OpenGL/src/gl.c")
 target_include_directories(GLAD PUBLIC "${LIB_DIR}/OpenGL/include")
 
 

@@ -1,13 +1,15 @@
 # ninja log v5
-49	429	8003279795031781	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_tables.cpp.obj	3dc845a872a8a674
-27	434	8003279795096254	CMakeFiles/CocoFluid.dir/libs/ImGui/backends/imgui_impl_opengl3.cpp.obj	9636554afc3a666b
-21	2095	8003279811082388	CMakeFiles/CocoFluid.dir/libs/ImGui/backends/imgui_impl_glfw.cpp.obj	2f7eb941e4f7d8eb
-32	4990	8003279839851663	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui.cpp.obj	3db14aa70b37ce03
-15	462	8003279795387103	CMakeFiles/GLAD.dir/libs/OpenGL/src/glad.c.obj	eb5189e1c5701493
-44	667	8003279796768045	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_draw.cpp.obj	12b0417642727640
-38	629	8003279796268790	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_demo.cpp.obj	e71b1c7925eb9c06
-55	1369	8003279803659729	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_widgets.cpp.obj	eb23deab9b3dda0c
-463	886	8003279798757685	GLAD.lib	da0029b48c8eea44
-20	637	8003282568405716	CMakeFiles/CocoFluid.dir/src/cpp/Entrypoint.cpp.obj	2f95fecc27fc491a
-19	35	0	clean	8c45b54705a541e8
-638	934	8003282571004251	CocoFluid.exe	cee21a160054031d
+17	113	8009101348766915	GLAD.lib	5f1f20c5b5cd2c90
+46	609	8009098919263830	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_tables.cpp.obj	3dc845a872a8a674
+23	634	8009098919536941	CMakeFiles/CocoFluid.dir/libs/ImGui/backends/imgui_impl_opengl3.cpp.obj	9636554afc3a666b
+18	913	8009098922532821	CMakeFiles/CocoFluid.dir/libs/ImGui/backends/imgui_impl_glfw.cpp.obj	2f7eb941e4f7d8eb
+27	1183	8009098925221246	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui.cpp.obj	3db14aa70b37ce03
+40	694	8009098920259044	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_draw.cpp.obj	12b0417642727640
+33	711	8009098920384668	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_demo.cpp.obj	e71b1c7925eb9c06
+53	805	8009098921428278	CMakeFiles/CocoFluid.dir/libs/ImGui/imgui_widgets.cpp.obj	eb23deab9b3dda0c
+18	783	8009103437113987	CMakeFiles/CocoFluid.dir/src/cpp/Entrypoint.cpp.obj	2f95fecc27fc491a
+21	45	0	clean	8c45b54705a541e8
+797	1263	8009103441140157	CocoFluid.exe	b198d57b5eca43f7
+12	295	8009098916286448	CMakeFiles/GLAD.dir/libs/OpenGL/src/gl.c.obj	6d47f8edbbcc94f6
+25	816	8009101610343995	CMakeFiles/CocoFluid.dir/src/cpp/GLContext.cpp.obj	ce15a7caa968a883
+23	796	8009103437274354	CMakeFiles/CocoFluid.dir/src/cpp/Window.cpp.obj	2d297e476a680a68
