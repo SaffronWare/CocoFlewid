@@ -10,6 +10,8 @@ set(SHDR_DIR ${SRC_DIR}/shaders)
 set(ASSET_DIR ${CMAKE_SOURCE_DIR}/assets)
 
 file(GLOB SOURCES 
+	"${SRC_DIR}/CocoGL/cpp/*.cpp"
+	"${SRC_DIR}CocoGL/include/*.h"
 	"${SRC_DIR}/cpp/*.cpp" 
 	"${SRC_DIR}/include/*.h" 
 	"${LIB_DIR}/ImGui/*.cpp"
@@ -34,6 +36,7 @@ target_include_directories(GLAD PUBLIC "${LIB_DIR}/OpenGL/include")
 
 add_executable (CocoFluid ${SOURCES})
 target_include_directories(CocoFluid PRIVATE
+	"${SRC_DIR}/CocoGL/include"
 	"${SRC_DIR}/include"
     "${LIB_DIR}/ImGui"         
     "${LIB_DIR}/ImGui/backends"

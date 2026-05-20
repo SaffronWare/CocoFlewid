@@ -47,5 +47,5 @@ public:
 	int getWidth();
 	int getHeight();
 	GLContext* getContext();
-
+	GLFWwindow* getWindow();
 };

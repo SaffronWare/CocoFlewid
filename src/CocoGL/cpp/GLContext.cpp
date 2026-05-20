@@ -9,14 +9,14 @@ GLContext::GLContext(){}
 
 GLContext::~GLContext()
 {
-	for (Shader* shader : shaders)
+	for (GLObject* object : objects)
 	{
-		if (shader)
+		if (object)
 		{
-			delete (shader);
+			delete (object);
 		}
 	}
-	shaders.clear();
+	objects.clear();
 }
 
 bool GLContext::Initialize()

@@ -64,15 +64,22 @@ GLContext* Window::Initialize(ContextStorageTemplate* storage, bool full_control
 		std::cerr << "Whoopsies! window didnt create!\n";
 	}
 
+	this->storage = storage;
+	this->give_program_full_control = full_control;
 
 	glfwMakeContextCurrent(window);
 
 	if (context->Initialize())
 		return context;
-	return nullptr;
+	else
+	{
+		return nullptr;
+	}
 
-	this->storage = storage;
-	this->give_program_full_control = full_control;
+
+
+
+
 
 }
 
@@ -86,19 +93,44 @@ void Window::Run()
 {
 	bool should_continue = true;
 
-	while (!glfwWindowShouldClose(this->window) && should_continue)
+	double previous_time = glfwGetTime();
+	double current_time;
+
+	if (!give_program_full_control)
 	{
 		
-		glfwPollEvents();
-		glfwGetWindowSize(window, &window_width, &window_height);
-		glViewport(0, 0, window_width, window_height);
 
-		glClearColor(1, 0, 0, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
+		while (!glfwWindowShouldClose(this->window) && should_continue)
+		{
 
-		should_continue = (*(this->loop))(this);
+			glfwPollEvents();
+			glfwGetWindowSize(window, &window_width, &window_height);
+			glViewport(0, 0, window_width, window_height);
 
-		glfwSwapBuffers(window);
+			glClearColor(1, 0, 0, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			should_continue = (*(this->loop))(this);
+
+			glfwSwapBuffers(window);
+
+			current_time = glfwGetTime();
+			dt = current_time - previous_time;
+			previous_time = current_time;
+		}
+	}
+	else
+	{
+		while (!glfwWindowShouldClose(this->window) && should_continue)
+		{
+			glfwGetWindowSize(window, &window_width, &window_height);
+
+			should_continue = (*(this->loop))(this);
+
+			current_time = glfwGetTime();
+			dt = current_time - previous_time;
+			previous_time = current_time;
+		}
 	}
 }
 
@@ -120,4 +152,9 @@ double Window::getDT()
 GLContext* Window::getContext()
 {
 	return context;
+}
+
+GLFWwindow* Window::getWindow()
+{
+	return this->window;
 }

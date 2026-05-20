@@ -3,7 +3,9 @@
 #include <glfw3.h>
 #include <iostream>
 #include <vector>
-#include "Shader.h"
+#include "GLObject.h"
+
+
 
 class ContextStorageTemplate
 {
@@ -16,7 +18,7 @@ public:
 class GLContext
 {
 private:
-	std::vector<Shader*> shaders;
+	std::vector<GLObject*> objects;
 	
 public:
 	GLContext();
