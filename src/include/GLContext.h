@@ -3,22 +3,21 @@
 #include <glfw3.h>
 #include <iostream>
 #include <vector>
+#include "Shader.h"
 
 class ContextStorageTemplate
 {
 private:
 public:
-	ContextStorage();
-	~ContextStorage();
+	ContextStorageTemplate();
+	~ContextStorageTemplate();
 };
 
 class GLContext
 {
 private:
-	std::vector<unsigned int> shaders;
-	std::vector<unsigned int> vaos;
-	std::vector<unsigned int> vbos;
-	std::vector<unsigned int> ubos;
+	std::vector<Shader*> shaders;
+	
 public:
 	GLContext();
 	~GLContext();

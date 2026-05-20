@@ -50,7 +50,7 @@ Window::~Window()
 	
 }
 
-GLContext* Window::Initialize(ContextStorageTemplate* storage)
+GLContext* Window::Initialize(ContextStorageTemplate* storage, bool full_control)
 {
 
 
@@ -72,6 +72,7 @@ GLContext* Window::Initialize(ContextStorageTemplate* storage)
 	return nullptr;
 
 	this->storage = storage;
+	this->give_program_full_control = full_control;
 
 }
 

@@ -7,7 +7,17 @@ ContextStorageTemplate::~ContextStorageTemplate() {}
 
 GLContext::GLContext(){}
 
-GLContext::~GLContext(){}
+GLContext::~GLContext()
+{
+	for (Shader* shader : shaders)
+	{
+		if (shader)
+		{
+			delete (shader);
+		}
+	}
+	shaders.clear();
+}
 
 bool GLContext::Initialize()
 {

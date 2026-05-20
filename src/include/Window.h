@@ -28,9 +28,10 @@ private:
 	GLContext* context;
 
 	bool (*loop)(Window*) = &default_loop;
-	
 
 	GLFWwindow* window;
+
+	bool give_program_full_control = false;
 
 public:
 	ContextStorageTemplate* storage;
@@ -38,7 +39,7 @@ public:
 	Window(unsigned int GL_VERSION_MAJOR = 0, unsigned int GL_VERSION_MINOR = 0, bool(*loop)(Window*)=nullptr);
 	~Window();
 
-	GLContext* Initialize(ContextStorageTemplate* storage);
+	GLContext* Initialize(ContextStorageTemplate* storage, bool full_control=false);
 	void SetCallback(void (*new_err_callback)(int,const char*));
 	void Run();
 
@@ -46,4 +47,5 @@ public:
 	int getWidth();
 	int getHeight();
 	GLContext* getContext();
+
 };
