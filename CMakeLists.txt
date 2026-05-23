@@ -3,6 +3,9 @@
 project ("CocoFluid")
 
 
+
+
+
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/libs)
 set(ASSET_DIR ${CMAKE_SOURCE_DIR}/assets)
@@ -42,6 +45,18 @@ target_include_directories(CocoFluid PRIVATE
     "${LIB_DIR}/ImGui/backends"
 	"${LIB_DIR}/STB_IMAGE"
 )
+
+include(FetchContent)
+
+FetchContent_Declare(
+	glm
+	GIT_REPOSITORY	https://github.com/g-truc/glm.git
+	GIT_TAG 	0af55ccecd98d4e5a8d1fad7de25ba429d60e863 #refs/tags/1.0.1
+)
+
+FetchContent_MakeAvailable(glm)
+
+target_link_libraries(CocoFluid PRIVATE glm::glm)
 
 target_link_libraries(CocoFluid PUBLIC GLAD)
 target_link_libraries(CocoFluid PRIVATE GLFW)
