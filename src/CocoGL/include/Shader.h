@@ -16,6 +16,6 @@ public:
 
 	static unsigned int compile_shader(const char* shader_source, GLenum shader_type);
 
-
+	unsigned int get_loc(const char* name);
 
 };

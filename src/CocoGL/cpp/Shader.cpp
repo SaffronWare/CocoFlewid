@@ -8,6 +8,7 @@ Shader::Shader()
 void Shader::CreatePipeline(const char* vertex_source, const char* fragment_source)
 {
 	this->id = glCreateProgram();
+	
 
 	unsigned int vertex_shader = Shader::compile_shader(vertex_source, GL_VERTEX_SHADER);
 	unsigned int fragment_shader = Shader::compile_shader(fragment_source, GL_FRAGMENT_SHADER);
@@ -66,5 +67,16 @@ unsigned int Shader::compile_shader(const char* source, GLenum type)
 void Shader::Use()
 {
 	glUseProgram(id);
+}
+
+unsigned int Shader::get_loc(const char* name)
+{
+	Use();
+	auto loc = glGetUniformLocation(id, name);
+	if (loc == -1)
+	{
+		std::cerr << "Error finding uniform " << name << " for this shader of type " << type << std::endl;
+	}
+	return loc;
 }
 

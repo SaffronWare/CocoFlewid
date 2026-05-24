@@ -7,7 +7,7 @@ int main()
 
 	Coco::ContextStorage* storage = new Coco::ContextStorage();
 
-	GLContext* context = window.Initialize(storage, true);
+	GLContext* context = window.Initialize(storage, 1000, 800, true);
 
 	storage->Init();
 

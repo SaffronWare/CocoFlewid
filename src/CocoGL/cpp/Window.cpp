@@ -50,15 +50,16 @@ Window::~Window()
 	
 }
 
-GLContext* Window::Initialize(ContextStorageTemplate* storage, bool full_control)
+GLContext* Window::Initialize(ContextStorageTemplate* storage, int width, int height, bool full_control)
 {
 
 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, gl_version_major);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, gl_version_minor);
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	window = glfwCreateWindow(1000, 800, "CocoFluid", NULL, NULL);
+	window = glfwCreateWindow(width, height, "CocoFluid", NULL, NULL);
 	if (!window)
 	{
 		std::cerr << "Whoopsies! window didnt create!\n";
@@ -105,6 +106,7 @@ void Window::Run()
 
 			glfwPollEvents();
 			glfwGetWindowSize(window, &window_width, &window_height);
+			aspect_ratio = window_width / window_height;
 			glViewport(0, 0, window_width, window_height);
 
 			glClearColor(1, 0, 0, 1);
@@ -117,6 +119,7 @@ void Window::Run()
 			current_time = glfwGetTime();
 			dt = current_time - previous_time;
 			previous_time = current_time;
+			
 		}
 	}
 	else
@@ -124,6 +127,7 @@ void Window::Run()
 		while (!glfwWindowShouldClose(this->window) && should_continue)
 		{
 			glfwGetWindowSize(window, &window_width, &window_height);
+			aspect_ratio = window_width / window_height;
 
 			should_continue = (*(this->loop))(this);
 
@@ -147,6 +151,11 @@ int Window::getHeight()
 double Window::getDT()
 {
 	return dt;
+}
+
+float Window::getAspect()
+{
+	return aspect_ratio;
 }
 
 GLContext* Window::getContext()

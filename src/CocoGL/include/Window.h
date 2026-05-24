@@ -20,9 +20,10 @@ private:
 	unsigned int gl_version_major = 4;
 	unsigned int gl_version_minor = 6;
 
-
+	float old_aspect_ratio = 0;
 	int window_width = 0;
 	int window_height = 0;
+	float aspect_ratio = 0;
 	double dt = 0.0f;
 
 	GLContext* context;
@@ -39,13 +40,14 @@ public:
 	Window(unsigned int GL_VERSION_MAJOR = 0, unsigned int GL_VERSION_MINOR = 0, bool(*loop)(Window*)=nullptr);
 	~Window();
 
-	GLContext* Initialize(ContextStorageTemplate* storage, bool full_control=false);
+	GLContext* Initialize(ContextStorageTemplate* storage, int width =1000, int height = 800, bool full_control=false);
 	void SetCallback(void (*new_err_callback)(int,const char*));
 	void Run();
 
 	double getDT();
 	int getWidth();
 	int getHeight();
+	float getAspect();
 	GLContext* getContext();
 	GLFWwindow* getWindow();
 };
