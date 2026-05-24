@@ -32,6 +32,7 @@ namespace Coco {
 
 		unsigned int aspect_uniform;
 		unsigned int fluid_texure_uniform;
+		unsigned int density_texture_uniform;
 
 		void Init();
 	};

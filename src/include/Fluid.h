@@ -22,11 +22,15 @@ struct Fluid
 	unsigned int num_grids_x;
 	unsigned int num_grids_y;
 	unsigned int data_texture;
+	unsigned int density_texture;
 
 	Shader enforcer;
 	Shader advector;
+	Shader updater;
 	unsigned int dt_uniform;
 	unsigned int grid_size_uniform;
+	unsigned int a_dt_uniform;
+	unsigned int a_grid_size_uniform;
 
 
 	Fluid();

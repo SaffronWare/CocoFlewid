@@ -38,6 +38,7 @@ namespace Coco {
 		shader.Use();
 		aspect_uniform = shader.get_loc("AspectRatio");
 		fluid_texure_uniform = shader.get_loc("FluidData");
+		density_texture_uniform = shader.get_loc("DensityData");
 
 		vbo.Initialize();
 		vbo.Data(vertices, sizeof(vertices));
@@ -69,8 +70,11 @@ namespace Coco {
 		storage->shader.Use();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,storage->fluid.data_texture);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, storage->fluid.density_texture);
 		glUniform1i(storage->fluid_texure_uniform, 0);
 		glUniform1f(storage->aspect_uniform, window->getAspect());
+		glUniform1i(storage->density_texture_uniform, 1);
 
 		storage->vao.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
