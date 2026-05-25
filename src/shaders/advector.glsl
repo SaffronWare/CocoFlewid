@@ -123,5 +123,4 @@ void main()
 
 		imageStore(write_texture, uv, data);
 	}
-	imageStore(write_texture, uv, data);
 }

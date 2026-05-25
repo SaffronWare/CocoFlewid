@@ -70,8 +70,8 @@ void main()
 				bdata.y -= correction_factor * (1-bdata.w) / solidity;
 
 				imageStore(write_texture, uv, data);
-				imageStore(write_texture, s_r, rdata);
-				imageStore(write_texture, s_b, bdata);
+				//imageStore(write_texture, s_r, rdata);
+				//imageStore(write_texture, s_b, bdata);
 				
 			}
 		}

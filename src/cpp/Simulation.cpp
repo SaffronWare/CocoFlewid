@@ -52,6 +52,7 @@ namespace Coco {
 		advector.CreateCompute(advector_source.c_str());
 		dt_uniform = advector.get_loc("dt");
 		advector_grid_spacing_uniform = advector.get_loc("grid_spacing");
+
 		
 		glGenTextures(1, &write_texture);
 		glBindTexture(GL_TEXTURE_2D, write_texture);
@@ -127,7 +128,7 @@ namespace Coco {
 		glUniform1f(storage->dt_uniform, (float)window->getDT());
 		glUniform1f(storage->advector_grid_spacing_uniform, grid_spacing);
 
-		//storage->RunShader();
+		storage->RunShader();
 		
 
 		storage->shader.Use();
@@ -143,7 +144,7 @@ namespace Coco {
 
 		glfwSwapBuffers(window->getWindow());
 
-		while (storage->frame > 1000) {};
+		//while (storage->frame > 1000) {};
 		storage->frame += 1;
 		return true;
 	}
