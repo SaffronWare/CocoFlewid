@@ -43,10 +43,15 @@ namespace Coco {
 		aspect_uniform = shader.get_loc("AspectRatio");
 		data_uniform = shader.get_loc("FluidData");
 
-		enforcer.CreateCompute("shaders/enforcer.glsl");
+		std::string enforcer_source = read_file("shaders/enforcer.glsl");
+		enforcer.CreateCompute(enforcer_source.c_str());
 		enforcer_grid_spacing_uniform = enforcer.get_loc("grid_spacing");
 		checker_type = enforcer.get_loc("type");
 
+		std::string advector_source = read_file("shaders/advector.glsl");
+		advector.CreateCompute(advector_source.c_str());
+		dt_uniform = advector.get_loc("dt");
+		advector_grid_spacing_uniform = advector.get_loc("grid_spacing");
 		
 		glGenTextures(1, &write_texture);
 		glBindTexture(GL_TEXTURE_2D, write_texture);
@@ -84,8 +89,8 @@ namespace Coco {
 
 	void ContextStorage::RunShader()
 	{
-		glBindImageTexture(0, write_texture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
-		glBindImageTexture(1, read_texture, 1, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+		glBindImageTexture(0, write_texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+		glBindImageTexture(1, read_texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
 		glDispatchCompute((width + 15) / 16, (height + 15) / 16, 1);
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_TEXTURE_FETCH_BARRIER_BIT);
 		Swap();
@@ -115,6 +120,9 @@ namespace Coco {
 		}
 
 		storage->advector.Use();
+		glUniform1f(storage->dt_uniform, (float)window->getDT());
+		glUniform1f(storage->advector_grid_spacing_uniform, grid_spacing);
+
 		storage->RunShader();
 		
 

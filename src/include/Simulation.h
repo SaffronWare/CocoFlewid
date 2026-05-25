@@ -38,6 +38,8 @@ namespace Coco {
 		unsigned int aspect_uniform;
 		unsigned int data_uniform;
 		unsigned int checker_type;
+		unsigned int dt_uniform;
+		unsigned int advector_grid_spacing_uniform;
 		unsigned enforcer_grid_spacing_uniform;
 
 

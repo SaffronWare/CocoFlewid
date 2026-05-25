@@ -30,8 +30,6 @@ void main()
 
 	if (uv.x < size.x  && uv.y < size.y && (uv.x + uv.y)%2 == type)
 	{
-
-		ivec2 s_lt = uv; // left and top
 		ivec2 s_r = wrap(uv + ivec2(1,0), size);
 		ivec2 s_b = wrap(uv + ivec2(0,1), size);
 		ivec2 s_l = wrap(uv + ivec2(-1,0), size);
