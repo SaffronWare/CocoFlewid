@@ -71,6 +71,11 @@ void main()
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	ivec2 size = imageSize(write_texture);
 
+	if (uv.x < size.x && uv.y < size.y)
+	{
+		imageStore(write_texture, uv, imageLoad(read_texture,uv));
+	}
+
 	if (uv.x < size.x  && uv.y < size.y)
 	{
 		ivec2 s_r = wrap(uv + ivec2(1,0), size);
@@ -118,5 +123,5 @@ void main()
 
 		imageStore(write_texture, uv, data);
 	}
-
+	imageStore(write_texture, uv, data);
 }

@@ -28,6 +28,11 @@ void main()
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	ivec2 size = imageSize(read_texture);
 
+	if (uv.x < size.x && uv.y < size.y)
+	{
+		imageStore(write_texture, uv, imageLoad(read_texture,uv));
+	}
+
 	if (uv.x < size.x  && uv.y < size.y && (uv.x + uv.y)%2 == type)
 	{
 		ivec2 s_r = wrap(uv + ivec2(1,0), size);
@@ -43,26 +48,36 @@ void main()
 		vec4 tdata = imageLoad(read_texture, s_t);
 		vec4 ldata = imageLoad(read_texture, s_l);
 
-		float solidity = bdata.w + rdata.w + tdata.w + ldata.w;
-		solidity = 4.0f-solidity;
+		if (data.w != 1.0f)
+		{
 
-		float u_i = data.x;
-		float v_i = data.y;
-		float u_j = rdata.x;
-		float v_j = bdata.y;
+			float solidity = bdata.w + rdata.w + tdata.w + ldata.w;
+			solidity = 4.0f-solidity;
+			if (solidity > 0.01f)
+			{
 
-		float divergence = (v_j - v_i + u_j - u_i) / grid_spacing;
-		float correction_factor = divergence * grid_spacing * overlaxation;
+				float u_i = data.x;
+				float v_i = data.y;
+				float u_j = rdata.x;
+				float v_j = bdata.y;
 
-		data.x += correction_factor * (1-ldata.w) / solidity;
-		data.y += correction_factor * (1-tdata.w) / solidity;
-		rdata.x -= correction_factor * (1-rdata.w) / solidity;
-		bdata.y -= correction_factor * (1-bdata.w) / solidity;
+				float divergence = (v_j - v_i + u_j - u_i) / grid_spacing;
+				float correction_factor = divergence  * overlaxation * grid_spacing;
 
-	
-		imageStore(write_texture, s_r, rdata);
-		imageStore(write_texture, s_b, bdata);
-		imageStore(write_texture, uv, data);
+				data.x += correction_factor * (1-ldata.w) / solidity;
+				data.y += correction_factor * (1-tdata.w) / solidity;
+				rdata.x -= correction_factor * (1-rdata.w) / solidity;
+				bdata.y -= correction_factor * (1-bdata.w) / solidity;
+
+				imageStore(write_texture, uv, data);
+				imageStore(write_texture, s_r, rdata);
+				imageStore(write_texture, s_b, bdata);
+				
+			}
+		}
+
+		
+
 
 	}
 

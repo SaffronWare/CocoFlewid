@@ -30,18 +30,18 @@ void main()
     // Density only inside circle
     if (d < radius)
     {
-        data.z = 1.0;
+        data.z = 0.0f;
     }
 
-    if (distance(uv, c)<2)
+    if (distance(uv, c)<40)
     {
         data.w = 1.0f;
     }
     else 
     {
     
-    data.x = 2.15; // u velocity, rightward
-    data.y = 0.0;  // v velocity
+        data.x = 2.15; // u velocity, rightward
+        data.y = 0.0;  // v velocity
     }
 
 

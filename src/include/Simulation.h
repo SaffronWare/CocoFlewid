@@ -41,6 +41,7 @@ namespace Coco {
 		unsigned int dt_uniform;
 		unsigned int advector_grid_spacing_uniform;
 		unsigned enforcer_grid_spacing_uniform;
+		unsigned int frame = 0;
 
 
 		void Swap();

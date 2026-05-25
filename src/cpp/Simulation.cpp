@@ -114,7 +114,7 @@ namespace Coco {
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 2; i++)
 		{
 
 			storage->enforcer.Use();
@@ -143,7 +143,8 @@ namespace Coco {
 
 		glfwSwapBuffers(window->getWindow());
 
-
+		while (storage->frame > 1000) {};
+		storage->frame += 1;
 		return true;
 	}
 }
