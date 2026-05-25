@@ -29,7 +29,7 @@ namespace Coco {
 		Shader injector;
 		Shader enforcer;
 		Shader advector;
-		Shader pusher;
+
 		unsigned int write_texture;
 		unsigned int read_texture;
 		VAO vao;
@@ -37,6 +37,12 @@ namespace Coco {
 
 		unsigned int aspect_uniform;
 		unsigned int data_uniform;
+		unsigned int checker_type;
+		unsigned enforcer_grid_spacing_uniform;
+
+
+		void Swap();
+		void RunShader();
 
 
 		void Init();

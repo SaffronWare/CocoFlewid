@@ -3,6 +3,7 @@
 
 const int width = 1000;
 const int height = 800;
+const float grid_spacing = 2.0f / height;
 
 
 namespace Coco {
@@ -42,6 +43,10 @@ namespace Coco {
 		aspect_uniform = shader.get_loc("AspectRatio");
 		data_uniform = shader.get_loc("FluidData");
 
+		enforcer.CreateCompute("shaders/enforcer.glsl");
+		enforcer_grid_spacing_uniform = enforcer.get_loc("grid_spacing");
+		checker_type = enforcer.get_loc("type");
+
 		
 		glGenTextures(1, &write_texture);
 		glBindTexture(GL_TEXTURE_2D, write_texture);
@@ -49,7 +54,7 @@ namespace Coco {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width+1, height+1, 0, GL_RGBA, GL_FLOAT, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 
 		glGenTextures(1, &read_texture);
 		glBindTexture(GL_TEXTURE_2D, read_texture);
@@ -57,7 +62,7 @@ namespace Coco {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width+1, height+1, 0, GL_RGBA, GL_FLOAT, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 
 		vbo.Initialize();
 		vbo.Data(vertices, sizeof(vertices));
@@ -68,6 +73,22 @@ namespace Coco {
 
 	
 
+	}
+
+	void ContextStorage::Swap()
+	{
+		unsigned int temp = write_texture;
+		write_texture = read_texture;
+		read_texture = temp;
+	}
+
+	void ContextStorage::RunShader()
+	{
+		glBindImageTexture(0, write_texture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+		glBindImageTexture(1, read_texture, 1, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+		glDispatchCompute((width + 15) / 16, (height + 15) / 16, 1);
+		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_TEXTURE_FETCH_BARRIER_BIT);
+		Swap();
 	}
 
 
@@ -84,16 +105,25 @@ namespace Coco {
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-	
+		for (int i = 0; i < 10; i++)
+		{
+
+			storage->enforcer.Use();
+			glUniform1i(storage->checker_type, i % 2);
+			glUniform1f(storage->enforcer_grid_spacing_uniform, grid_spacing);
+			storage->RunShader();
+		}
+
+		storage->advector.Use();
+		storage->RunShader();
+		
 
 		storage->shader.Use();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D,storage->velocity_texture);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, storage->scalar_texture);
-		glUniform1i(storage->velocity_texure_uniform, 0);
+		glBindTexture(GL_TEXTURE_2D,storage->read_texture);
+		glUniform1i(storage->data_uniform, 0);
 		glUniform1f(storage->aspect_uniform, window->getAspect());
-		glUniform1i(storage->scalar_texture_uniform, 1);
+
 
 		storage->vao.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
