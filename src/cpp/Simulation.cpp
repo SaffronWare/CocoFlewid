@@ -76,7 +76,11 @@ namespace Coco {
 		vao.SetSlot(0, 0, vbo, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 		vao.EnableSlot(0);
 
-	
+		Shader AITest;
+		std::string aitestcode = read_file("shaders/aitestcode.glsl");
+		AITest.CreateCompute(aitestcode.c_str());
+		AITest.Use();
+		RunShader();
 
 	}
 
@@ -116,7 +120,7 @@ namespace Coco {
 			storage->enforcer.Use();
 			glUniform1i(storage->checker_type, i % 2);
 			glUniform1f(storage->enforcer_grid_spacing_uniform, grid_spacing);
-			storage->RunShader();
+			//storage->RunShader();
 		}
 
 		storage->advector.Use();
