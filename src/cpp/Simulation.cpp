@@ -1,5 +1,8 @@
 #include "Simulation.h"
-#include "Fluid.h"
+
+
+const int width = 1000;
+const int height = 800;
 
 
 namespace Coco {
@@ -37,8 +40,24 @@ namespace Coco {
 
 		shader.Use();
 		aspect_uniform = shader.get_loc("AspectRatio");
-		fluid_texure_uniform = shader.get_loc("FluidData");
-		density_texture_uniform = shader.get_loc("DensityData");
+		data_uniform = shader.get_loc("FluidData");
+
+		
+		glGenTextures(1, &write_texture);
+		glBindTexture(GL_TEXTURE_2D, write_texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width+1, height+1, 0, GL_RGBA, GL_FLOAT, nullptr);
+
+		glGenTextures(1, &read_texture);
+		glBindTexture(GL_TEXTURE_2D, read_texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width+1, height+1, 0, GL_RGBA, GL_FLOAT, nullptr);
 
 		vbo.Initialize();
 		vbo.Data(vertices, sizeof(vertices));
@@ -47,7 +66,7 @@ namespace Coco {
 		vao.SetSlot(0, 0, vbo, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 		vao.EnableSlot(0);
 
-		fluid.Init(1000, 1000.0f/800.0f);
+	
 
 	}
 
@@ -65,16 +84,16 @@ namespace Coco {
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		storage->fluid.update((float)window->getDT());
+	
 
 		storage->shader.Use();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D,storage->fluid.data_texture);
+		glBindTexture(GL_TEXTURE_2D,storage->velocity_texture);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, storage->fluid.density_texture);
-		glUniform1i(storage->fluid_texure_uniform, 0);
+		glBindTexture(GL_TEXTURE_2D, storage->scalar_texture);
+		glUniform1i(storage->velocity_texure_uniform, 0);
 		glUniform1f(storage->aspect_uniform, window->getAspect());
-		glUniform1i(storage->density_texture_uniform, 1);
+		glUniform1i(storage->scalar_texture_uniform, 1);
 
 		storage->vao.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CocoFramework.h"
-#include "Fluid.h"
+
 
 constexpr int OPENGL_MAJOR = 4;
 constexpr int OPENGL_MINOR = 6;
@@ -26,13 +26,18 @@ namespace Coco {
 	{
 	public:
 		Shader shader;
+		Shader injector;
+		Shader enforcer;
+		Shader advector;
+		Shader pusher;
+		unsigned int write_texture;
+		unsigned int read_texture;
 		VAO vao;
 		VBO vbo;
-		Fluid fluid;
 
 		unsigned int aspect_uniform;
-		unsigned int fluid_texure_uniform;
-		unsigned int density_texture_uniform;
+		unsigned int data_uniform;
+
 
 		void Init();
 	};
