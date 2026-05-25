@@ -9,6 +9,7 @@ void main()
 {
     ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
     ivec2 size = imageSize(write_texture);
+    ivec2 c = size /2 + ivec2(100,0);
 
     if (uv.x >= size.x || uv.y >= size.y)
         return;
@@ -25,14 +26,24 @@ void main()
     vec4 data = vec4(0.0);
 
     // Velocity everywhere
-    data.x = 0.15; // u velocity, rightward
-    data.y = 0.0;  // v velocity
 
     // Density only inside circle
     if (d < radius)
     {
         data.z = 1.0;
     }
+
+    if (distance(uv, c)<2)
+    {
+        data.w = 1.0f;
+    }
+    else 
+    {
+    
+    data.x = 2.15; // u velocity, rightward
+    data.y = 0.0;  // v velocity
+    }
+
 
     imageStore(write_texture, uv, data);
 }

@@ -43,7 +43,8 @@ void main()
 		vec4 tdata = imageLoad(read_texture, s_t);
 		vec4 ldata = imageLoad(read_texture, s_l);
 
-		float solidity = bdata.z + rdata.z + tdata.z + ldata.z;
+		float solidity = bdata.w + rdata.w + tdata.w + ldata.w;
+		solidity = 4.0f-solidity;
 
 		float u_i = data.x;
 		float v_i = data.y;
@@ -53,10 +54,10 @@ void main()
 		float divergence = (v_j - v_i + u_j - u_i) / grid_spacing;
 		float correction_factor = divergence * grid_spacing * overlaxation;
 
-		data.x += correction_factor * ldata.z / solidity;
-		data.y += correction_factor * tdata.z / solidity;
-		rdata.x -= correction_factor * rdata.z / solidity;
-		bdata.y -= correction_factor * bdata.z / solidity;
+		data.x += correction_factor * (1-ldata.w) / solidity;
+		data.y += correction_factor * (1-tdata.w) / solidity;
+		rdata.x -= correction_factor * (1-rdata.w) / solidity;
+		bdata.y -= correction_factor * (1-bdata.w) / solidity;
 
 	
 		imageStore(write_texture, s_r, rdata);

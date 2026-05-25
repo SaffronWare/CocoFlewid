@@ -120,14 +120,14 @@ namespace Coco {
 			storage->enforcer.Use();
 			glUniform1i(storage->checker_type, i % 2);
 			glUniform1f(storage->enforcer_grid_spacing_uniform, grid_spacing);
-			//storage->RunShader();
+			storage->RunShader();
 		}
 
 		storage->advector.Use();
 		glUniform1f(storage->dt_uniform, (float)window->getDT());
 		glUniform1f(storage->advector_grid_spacing_uniform, grid_spacing);
 
-		storage->RunShader();
+		//storage->RunShader();
 		
 
 		storage->shader.Use();

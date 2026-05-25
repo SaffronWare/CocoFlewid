@@ -40,6 +40,7 @@ vec4 read(ivec2 inp)
 
 vec4 interpolate(vec2 value, vec2 closest)
 {
+		
 		float offx1 = abs(value.x - closest.x);
 		float offx2 = 1-offx1;
 		float offy1 = abs(value.y - closest.y);
@@ -101,10 +102,18 @@ void main()
 		vec2 osource = round(old_source);
 
 
-
+		if (read(ivec2(vsource)).w < 1)
+		{
 		data.y = interpolate(old_v_source, vsource).y;
+		}
+		if (read(ivec2(usource)).w < 1)
+		{
 		data.x = interpolate(old_u_source, usource).x;
-		data.z = interpolate(old_source, osource).z; //probably density
+		}
+		if (read(ivec2(osource)).w < 1)
+		{
+		data.z = interpolate(old_source, osource).z;
+		}//probably density
 
 
 		imageStore(write_texture, uv, data);
