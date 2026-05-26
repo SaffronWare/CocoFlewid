@@ -10,3 +10,5 @@
 #include "VAO.h"
 #include "Utils.h"
 #include "Shader.h"
+#include "Texture.h"
+#include "PPTexture.h"

@@ -1,13 +1,28 @@
 #version 460 core
 layout (local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
-layout (rgba32f, binding=0 ) uniform image2D write_texture;
-layout (rgba32f, binding=1 ) uniform image2D read_texture;
+layout (r32f, binding=0 ) uniform image2D urt;
+layout (r32f, binding=1 ) uniform image2D uwt;
+layout (r32f, binding=2) uniform image2D vrt;
+layout (r32f, binding=3) uniform image2D vwt;
+layout (rgba32f, binding=4) uniform image2D srt;
+layout (rgba32f, binding=5) uniform image2D swt;
 uniform float grid_spacing;
 uniform int type;
 
 const float overlaxation = 1.9f;
 
-
+float u(vec2 uv_)
+{
+	return imageLoad(urt, ivec2(uv_)).r;
+}
+float v(vec2 uv_)
+{
+	return imageLoad(vrt, ivec2(uv_)).r;
+}
+float solidity(vec2 uv_)
+{
+	return imageLoad(srt, ivec2(uv_)).w;
+}
 
 int cwrap(float comp, int size)
 {
@@ -26,11 +41,13 @@ void main()
 {
 	
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
-	ivec2 size = imageSize(read_texture);
+	ivec2 size = imageSize(urt);
 
 	if (uv.x < size.x && uv.y < size.y)
 	{
-		imageStore(write_texture, uv, imageLoad(read_texture,uv));
+		imageStore(uwt, uv, imageLoad(urt,uv));
+		imageStore(vwt, uv, imageLoad(vrt,uv));
+		imageStore(swt, uv, imageLoad(srt,uv));
 	}
 
 	if (uv.x < size.x  && uv.y < size.y && (uv.x + uv.y)%2 == type)
@@ -41,12 +58,13 @@ void main()
 		ivec2 s_t = wrap(uv + ivec2(0, -1), size);
 
 
-
-		vec4 data = imageLoad(read_texture, uv);
-		vec4 bdata = imageLoad(read_texture, s_b);
-		vec4 rdata = imageLoad(read_texture, s_r);
-		vec4 tdata = imageLoad(read_texture, s_t);
-		vec4 ldata = imageLoad(read_texture, s_l);
+		vec4 data = imageLoad(srt, uv);
+		vec4 data_u= imageLoad(urt, uv);
+		vec4 data_v = imageLoad(vrt, uv);
+		vec4 bdata = imageLoad(vrt, s_b);
+		vec4 rdata = imageLoad(urt, s_r);
+		vec4 tdata = imageLoad(vrt, s_t);
+		vec4 ldata = imageLoad(urt, s_l);
 
 		if (data.w != 1.0f)
 		{

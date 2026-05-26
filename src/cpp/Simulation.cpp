@@ -54,21 +54,9 @@ namespace Coco {
 		advector_grid_spacing_uniform = advector.get_loc("grid_spacing");
 
 		
-		glGenTextures(1, &write_texture);
-		glBindTexture(GL_TEXTURE_2D, write_texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-
-		glGenTextures(1, &read_texture);
-		glBindTexture(GL_TEXTURE_2D, read_texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+		u_velocities.Initialize(width, height, GL_R32F, GL_FLOAT);
+		v_velocities.Initialize(width, height, GL_R32F, GL_FLOAT);
+		scalar_data.Initialize(width, height, GL_RGBA32F, GL_FLOAT);
 
 		vbo.Initialize();
 		vbo.Data(vertices, sizeof(vertices));
@@ -85,17 +73,13 @@ namespace Coco {
 
 	}
 
-	void ContextStorage::Swap()
-	{
-		unsigned int temp = write_texture;
-		write_texture = read_texture;
-		read_texture = temp;
-	}
+
 
 	void ContextStorage::RunShader()
 	{
-		glBindImageTexture(0, write_texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-		glBindImageTexture(1, read_texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+		u_velocities.BindImage(0, 1);
+		v_velocities.BindImage(2, 3);
+		scalar_data.BindImage(4, 5);
 		glDispatchCompute((width + 15) / 16, (height + 15) / 16, 1);
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_TEXTURE_FETCH_BARRIER_BIT);
 		Swap();
@@ -132,9 +116,13 @@ namespace Coco {
 		
 
 		storage->shader.Use();
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D,storage->read_texture);
-		glUniform1i(storage->data_uniform, 0);
+
+		storage->u_velocities.BindReadToSlot(0);
+		storage->v_velocities.BindReadToSlot(1);
+		storage->scalar_data.BindReadToSlot(2);
+		glUniform1i(storage->u_uniform, 0);
+		glUniform1i(storage->v_uniform, 1);
+		glUniform1i(storage->scalar_uniform, 2);
 		glUniform1f(storage->aspect_uniform, window->getAspect());
 
 

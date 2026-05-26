@@ -30,8 +30,10 @@ namespace Coco {
 		Shader enforcer;
 		Shader advector;
 
-		unsigned int write_texture;
-		unsigned int read_texture;
+		
+		PPTexture u_velocities;
+		PPTexture v_velocities;
+		PPTexture scalar_data;
 		VAO vao;
 		VBO vbo;
 
