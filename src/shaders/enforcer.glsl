@@ -11,17 +11,31 @@ uniform int type;
 
 const float overlaxation = 1.9f;
 
-float u(vec2 uv_)
+float ru(vec2 uv_)
 {
-	return imageLoad(urt, ivec2(uv_)).r;
+	return imageLoad(urt, ivec2(uv_)).x;
 }
-float v(vec2 uv_)
+float rv(vec2 uv_)
 {
-	return imageLoad(vrt, ivec2(uv_)).r;
+	return imageLoad(vrt, ivec2(uv_)).x;
 }
 float solidity(vec2 uv_)
 {
 	return imageLoad(srt, ivec2(uv_)).w;
+};
+
+void set_u(vec2 uv, float u_v)
+{
+	vec4 d = imageLoad(urt, ivec2(uv));
+	d.x = u_v;
+	imageStore(uwt, ivec2(uv), d);
+}
+
+void set_v(vec2 uv, float v_v)
+{
+	vec4 d = imageLoad(vrt, ivec2(uv));
+	d.x = v_v;
+	imageStore(vwt, ivec2(uv), d);
 }
 
 int cwrap(float comp, int size)
@@ -58,18 +72,20 @@ void main()
 		ivec2 s_t = wrap(uv + ivec2(0, -1), size);
 
 
-		vec4 data = imageLoad(srt, uv);
-		vec4 data_u= imageLoad(urt, uv);
-		vec4 data_v = imageLoad(vrt, uv);
-		vec4 bdata = imageLoad(vrt, s_b);
-		vec4 rdata = imageLoad(urt, s_r);
-		vec4 tdata = imageLoad(vrt, s_t);
-		vec4 ldata = imageLoad(urt, s_l);
+		float u = ru(uv);
+		float v = rv(uv);
+		float u_right = ru(s_r);
+		float v_bottom = rv(s_b);
+		float sld = solidity(uv);
+		float sld_top = solidity(s_t);
+		float sld_bottom = solidity(s_b);
+		float sld_right = solidity(s_r);
+		float sld_left = solidity(s_l);
 
 		if (data.w != 1.0f)
 		{
 
-			float solidity = bdata.w + rdata.w + tdata.w + ldata.w;
+			float solidity = sld_top + sld_bottom + sld_right + sld_left;
 			solidity = 4.0f-solidity;
 			if (solidity > 0.01f)
 			{
@@ -79,17 +95,19 @@ void main()
 				float u_j = rdata.x;
 				float v_j = bdata.y;
 
-				float divergence = (v_j - v_i + u_j - u_i) / grid_spacing;
+				float divergence = (v_bottom - v + u_right - u) / grid_spacing;
 				float correction_factor = divergence  * overlaxation * grid_spacing;
 
-				data.x += correction_factor * (1-ldata.w) / solidity;
-				data.y += correction_factor * (1-tdata.w) / solidity;
-				rdata.x -= correction_factor * (1-rdata.w) / solidity;
-				bdata.y -= correction_factor * (1-bdata.w) / solidity;
+				u += correction_factor * (1-sld_left) / solidity;
+				v += correction_factor * (1-sld_top) / solidity;
+				u_right -= correction_factor * (1-sld_right) / solidity;
+				v_bottom -= correction_factor * (1-sld_bottom) / solidity;
 
-				imageStore(write_texture, uv, data);
-				//imageStore(write_texture, s_r, rdata);
-				//imageStore(write_texture, s_b, bdata);
+				set_u(uv, u);
+				set_v(uv, v);
+				set_u(s_r, u_right);
+				set_v(s_b, v_bottom);
+
 				
 			}
 		}
