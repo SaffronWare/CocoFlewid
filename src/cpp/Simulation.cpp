@@ -59,9 +59,9 @@ namespace Coco {
 		copier.CreateCompute(copier_source.c_str());
 
 		
-		u_velocities.Initialize(width, height, GL_R32F, GL_FLOAT);
-		v_velocities.Initialize(width, height, GL_R32F, GL_FLOAT);
-		scalar_data.Initialize(width, height, GL_RGBA32F, GL_FLOAT);
+		u_velocities.Initialize(width/4, height/4, GL_R32F, GL_FLOAT);
+		v_velocities.Initialize(width/4, height/4, GL_R32F, GL_FLOAT);
+		scalar_data.Initialize(width/4, height/4, GL_RGBA32F, GL_FLOAT);
 
 		vbo.Initialize();
 		vbo.Data(vertices, sizeof(vertices));
@@ -117,7 +117,7 @@ namespace Coco {
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 50; i++)
 		{
 			storage->Copy();
 			storage->enforcer.Use();

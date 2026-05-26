@@ -105,9 +105,9 @@ float interpolateu(vec2 value, vec2 closest)
 		}
 		
 		float out_value =offx2 * offy2 * ru(closest);
-		out_value += offx1 * offy2 * ru(ivec2(closest + vec2(x_off, 0)));
-		out_value += offx2 * offy1 * ru(ivec2(closest + vec2(0, y_off)));
-		out_value += offx1 * offy1 * ru(ivec2(closest + vec2(x_off,y_off)));
+		out_value += offx1 * offy2 * ru(vec2(closest + vec2(x_off, 0)));
+		out_value += offx2 * offy1 * ru(vec2(closest + vec2(0, y_off)));
+		out_value += offx1 * offy1 * ru(vec2(closest + vec2(x_off,y_off)));
 		return out_value;
 }
 
@@ -131,9 +131,9 @@ float interpolatev(vec2 value, vec2 closest)
 		}
 		
 		float out_value =offx2 * offy2 * rv(closest);
-		out_value += offx1 * offy2 * rv(ivec2(closest + vec2(x_off, 0)));
-		out_value += offx2 * offy1 * rv(ivec2(closest + vec2(0, y_off)));
-		out_value += offx1 * offy1 * rv(ivec2(closest + vec2(x_off,y_off)));
+		out_value += offx1 * offy2 * rv(vec2(closest + vec2(x_off, 0)));
+		out_value += offx2 * offy1 * rv(vec2(closest + vec2(0, y_off)));
+		out_value += offx1 * offy1 * rv(vec2(closest + vec2(x_off,y_off)));
 		return out_value;
 }
 
@@ -157,9 +157,9 @@ float interpolatedensity(vec2 value, vec2 closest)
 		}
 		
 		float out_value =offx2 * offy2 * rdens(closest);
-		out_value += offx1 * offy2 * rdens(ivec2(closest + vec2(x_off, 0)));
-		out_value += offx2 * offy1 * rdens(ivec2(closest + vec2(0, y_off)));
-		out_value += offx1 * offy1 * rdens(ivec2(closest + vec2(x_off,y_off)));
+		out_value += offx1 * offy2 * rdens(vec2(closest + vec2(x_off, 0)));
+		out_value += offx2 * offy1 * rdens(vec2(closest + vec2(0, y_off)));
+		out_value += offx1 * offy1 * rdens(vec2(closest + vec2(x_off,y_off)));
 		return out_value;
 }
 

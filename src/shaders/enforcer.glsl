@@ -57,13 +57,6 @@ void main()
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	ivec2 size = imageSize(urt);
 
-	if (uv.x < size.x && uv.y < size.y)
-	{
-		imageStore(uwt, uv, imageLoad(urt,uv));
-		imageStore(vwt, uv, imageLoad(vrt,uv));
-		imageStore(swt, uv, imageLoad(srt,uv));
-	}
-
 	if (uv.x < size.x  && uv.y < size.y && (uv.x + uv.y)%2 == type)
 	{
 		ivec2 s_r = wrap(uv + ivec2(1,0), size);
@@ -82,18 +75,13 @@ void main()
 		float sld_right = solidity(s_r);
 		float sld_left = solidity(s_l);
 
-		if (data.w != 1.0f)
+		if (sld != 1.0f)
 		{
 
 			float solidity = sld_top + sld_bottom + sld_right + sld_left;
 			solidity = 4.0f-solidity;
 			if (solidity > 0.01f)
 			{
-
-				float u_i = data.x;
-				float v_i = data.y;
-				float u_j = rdata.x;
-				float v_j = bdata.y;
 
 				float divergence = (v_bottom - v + u_right - u) / grid_spacing;
 				float correction_factor = divergence  * overlaxation * grid_spacing;

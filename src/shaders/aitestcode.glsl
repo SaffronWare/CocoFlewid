@@ -28,8 +28,8 @@ void main()
     float smokeD = length(p - smokeCenter);
 
 
-    ivec2 obstacleCenter = size / 2 + ivec2(100, 0);
-    float obstacleRadius = 150.0;
+    ivec2 obstacleCenter = size / 2 + ivec2(50, 0);
+    float obstacleRadius = 10.0;
     float obstacleD = distance(vec2(uv), vec2(obstacleCenter));
 
     float density = 0.0;
