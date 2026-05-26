@@ -16,5 +16,6 @@ public:
 	void BindImage(unsigned int read_slot, unsigned int write_slot);
 	void BindSlot(unsigned int read_slot, unsigned int write_slot);
 	void BindReadToSlot(unsigned int slot);
+	void Swap();
 	
 };

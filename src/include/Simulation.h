@@ -26,9 +26,9 @@ namespace Coco {
 	{
 	public:
 		Shader shader;
-		Shader injector;
 		Shader enforcer;
 		Shader advector;
+		Shader copier;
 
 		
 		PPTexture u_velocities;
@@ -38,7 +38,9 @@ namespace Coco {
 		VBO vbo;
 
 		unsigned int aspect_uniform;
-		unsigned int data_uniform;
+		unsigned int v_uniform;
+		unsigned int u_uniform;
+		unsigned int scalar_uniform;
 		unsigned int checker_type;
 		unsigned int dt_uniform;
 		unsigned int advector_grid_spacing_uniform;
@@ -46,8 +48,9 @@ namespace Coco {
 		unsigned int frame = 0;
 
 
-		void Swap();
 		void RunShader();
+		void Copy();
+		void Swap();
 
 
 		void Init();

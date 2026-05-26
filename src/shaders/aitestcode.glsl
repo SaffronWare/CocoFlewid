@@ -2,14 +2,19 @@
 
 layout (local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
-layout (rgba32f, binding = 0) uniform image2D write_texture;
-layout (rgba32f, binding = 1) uniform image2D read_texture;
+layout (r32f, binding = 0) uniform image2D urt;
+layout (r32f, binding = 1) uniform image2D uwt;
+
+layout (r32f, binding = 2) uniform image2D vrt;
+layout (r32f, binding = 3) uniform image2D vwt;
+
+layout (rgba32f, binding = 4) uniform image2D srt;
+layout (rgba32f, binding = 5) uniform image2D swt;
 
 void main()
 {
     ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
-    ivec2 size = imageSize(write_texture);
-    ivec2 c = size /2 + ivec2(100,0);
+    ivec2 size = imageSize(swt);
 
     if (uv.x >= size.x || uv.y >= size.y)
         return;
@@ -18,30 +23,38 @@ void main()
 
     vec2 p = (vec2(uv) + vec2(0.5)) / dims;
 
-    vec2 center = vec2(0.35, 0.5);
-    float radius = 0.08;
+    vec2 smokeCenter = vec2(0.35, 0.5);
+    float smokeRadius = 0.08;
+    float smokeD = length(p - smokeCenter);
 
-    float d = length(p - center);
 
-    vec4 data = vec4(0.0);
+    ivec2 obstacleCenter = size / 2 + ivec2(100, 0);
+    float obstacleRadius = 150.0;
+    float obstacleD = distance(vec2(uv), vec2(obstacleCenter));
 
-    // Velocity everywhere
+    float density = 0.0;
+    float solidity = 0.0;
 
-    // Density only inside circle
-    if (d < radius)
+    float u = 2.15;
+    float v = 0.0;
+
+    if (smokeD < smokeRadius)
     {
-        data.z = 1.0f;
+        density = 1.0;
     }
 
-    if (distance(uv, c) < 150)
+    if (obstacleD < obstacleRadius)
     {
-        data.w = 1.0f;
+        solidity = 1.0;
+        density = 0.0;
+
+
+        u = 0.0;
+        v = 0.0;
     }
 
-    
-    data.x = 2.15; // u velocity, rightward
-    data.y = 0.0;  // v velocity
-    
+    imageStore(uwt, uv, vec4(u, 0.0, 0.0, 0.0));
+    imageStore(vwt, uv, vec4(v, 0.0, 0.0, 0.0));
 
-    imageStore(write_texture, uv, data);
+    imageStore(swt, uv, vec4(density, 0.0, 0.0, solidity));
 }

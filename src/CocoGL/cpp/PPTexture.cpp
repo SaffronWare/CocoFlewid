@@ -32,7 +32,7 @@ void PPTexture::BindImage(unsigned int slot0, unsigned int slot1)
 		t0.BindImage(slot1);
 		t1.BindImage(slot0);
 	}
-	swap += 1;
+	
 
 }
 
@@ -48,7 +48,7 @@ void PPTexture::BindSlot(unsigned int slot0, unsigned int slot1)
 		t0.BindSlot(slot1);
 		t1.BindSlot(slot0);
 	}
-	swap += 1;
+	
 }
 
 void PPTexture::BindReadToSlot(unsigned int slot)
@@ -62,3 +62,10 @@ void PPTexture::BindReadToSlot(unsigned int slot)
 		t1.BindSlot(slot);
 	}
 }
+
+void PPTexture::Swap()
+{
+	swap += 1;
+}
+
+

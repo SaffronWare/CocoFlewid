@@ -41,7 +41,9 @@ namespace Coco {
 
 		shader.Use();
 		aspect_uniform = shader.get_loc("AspectRatio");
-		data_uniform = shader.get_loc("FluidData");
+		u_uniform = shader.get_loc("UData");
+		v_uniform = shader.get_loc("VData");
+		scalar_uniform = shader.get_loc("SData");
 
 		std::string enforcer_source = read_file("shaders/enforcer.glsl");
 		enforcer.CreateCompute(enforcer_source.c_str());
@@ -52,6 +54,9 @@ namespace Coco {
 		advector.CreateCompute(advector_source.c_str());
 		dt_uniform = advector.get_loc("dt");
 		advector_grid_spacing_uniform = advector.get_loc("grid_spacing");
+
+		std::string copier_source = read_file("shaders/copy.glsl");
+		copier.CreateCompute(copier_source.c_str());
 
 		
 		u_velocities.Initialize(width, height, GL_R32F, GL_FLOAT);
@@ -70,10 +75,17 @@ namespace Coco {
 		AITest.CreateCompute(aitestcode.c_str());
 		AITest.Use();
 		RunShader();
+		Swap();
+		
 
 	}
 
+	void ContextStorage::Copy()
+	{
+		copier.Use();
+		RunShader();
 
+	}
 
 	void ContextStorage::RunShader()
 	{
@@ -82,7 +94,13 @@ namespace Coco {
 		scalar_data.BindImage(4, 5);
 		glDispatchCompute((width + 15) / 16, (height + 15) / 16, 1);
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_TEXTURE_FETCH_BARRIER_BIT);
-		Swap();
+	}
+
+	void ContextStorage::Swap()
+	{
+		u_velocities.Swap();
+		v_velocities.Swap();
+		scalar_data.Swap();
 	}
 
 
@@ -101,22 +119,23 @@ namespace Coco {
 
 		for (int i = 0; i < 2; i++)
 		{
-
+			storage->Copy();
 			storage->enforcer.Use();
 			glUniform1i(storage->checker_type, i % 2);
 			glUniform1f(storage->enforcer_grid_spacing_uniform, grid_spacing);
 			storage->RunShader();
+			storage->Swap();
 		}
 
+		storage->Copy();
 		storage->advector.Use();
 		glUniform1f(storage->dt_uniform, (float)window->getDT());
 		glUniform1f(storage->advector_grid_spacing_uniform, grid_spacing);
-
 		storage->RunShader();
+		storage->Swap();
 		
-
+		storage->Copy();
 		storage->shader.Use();
-
 		storage->u_velocities.BindReadToSlot(0);
 		storage->v_velocities.BindReadToSlot(1);
 		storage->scalar_data.BindReadToSlot(2);
