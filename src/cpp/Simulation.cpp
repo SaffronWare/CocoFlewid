@@ -71,11 +71,14 @@ namespace Coco {
 		vao.EnableSlot(0);
 
 		Shader AITest;
-		std::string aitestcode = read_file("shaders/aitestcode.glsl");
+		std::string aitestcode = read_file("shaders/initializer.glsl");
 		AITest.CreateCompute(aitestcode.c_str());
 		AITest.Use();
 		RunShader();
 		Swap();
+
+		std::string windtunnel_source = read_file("shaders/windtunnel.glsl");
+		windtunnel.CreateCompute(windtunnel_source.c_str());
 		
 
 	}
@@ -116,6 +119,11 @@ namespace Coco {
 
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		storage->Copy();
+		storage->windtunnel.Use();
+		storage->RunShader();
+		storage->Swap();
 
 		for (int i = 0; i < 50; i++)
 		{

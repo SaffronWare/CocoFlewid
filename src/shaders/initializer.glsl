@@ -23,10 +23,6 @@ void main()
 
     vec2 p = (vec2(uv) + vec2(0.5)) / dims;
 
-    vec2 smokeCenter = vec2(0.35, 0.5);
-    float smokeRadius = 0.08;
-    float smokeD = length(p - smokeCenter);
-
 
     ivec2 obstacleCenter = size / 2 + ivec2(50, 0);
     float obstacleRadius = 10.0;
@@ -35,13 +31,8 @@ void main()
     float density = 0.0;
     float solidity = 0.0;
 
-    float u = 2.15;
+    float u = 1.00;
     float v = 0.0;
-
-    if (smokeD < smokeRadius)
-    {
-        density = 1.0;
-    }
 
     if (obstacleD < obstacleRadius)
     {

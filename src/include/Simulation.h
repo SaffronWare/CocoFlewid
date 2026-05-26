@@ -29,6 +29,7 @@ namespace Coco {
 		Shader enforcer;
 		Shader advector;
 		Shader copier;
+		Shader windtunnel;
 
 		
 		PPTexture u_velocities;
