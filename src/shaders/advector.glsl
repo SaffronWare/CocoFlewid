@@ -79,7 +79,7 @@ void set_density(vec2 uv, float d)
 {
 	uv = fwrap(uv, imageSize(srt));
 	vec4 data = imageLoad(srt, ivec2(uv));
-	d.x = d;
+	data.x = d;
 	imageStore(swt, ivec2(uv), data);
 }
 
@@ -206,20 +206,18 @@ void main()
 		vec2 osource = round(old_source);
 
 
-		if (solidity(ivec2(vsource)) < 1)
+		if (solidity(vsource) < 1)
 		{
 			set_v(uv,interpolatev(old_v_source, vsource));
 		}
-		if (solidity(ivec2(usource)) < 1)
+		if (solidity(usource) < 1)
 		{
 			set_u(uv,interpolateu(old_u_source, usource));
 		}
-		if (solidity(ivec2(osource)) < 1)
+		if (solidity(osource) < 1)
 		{
 			set_density(uv, interpolatedensity(old_source, osource));
 		}//probably density
 
-
-		imageStore(write_texture, uv, data);
 	}
 }
