@@ -24,12 +24,12 @@ void main()
     if (float(uv.x) / float(size.x) < 0.05f)
     {
         
-        if (mod(float(uv.y) / float(size.y), 0.1) < 0.005f)
+        if (abs(float(uv.y) / float(size.y)-0.5f) < 0.05f)
         {
-        density = 1.0;
+            density = 1.0;
         }
         imageStore(swt, uv, vec4(density, 0.0, 0.0, 0.0));
-        imageStore(uwt, uv, vec4(1.0,0.0,0.0,0.0));
+        imageStore(uwt, uv, vec4(0.1f,0.0,0.0,0.0));
         imageStore(vwt, uv, vec4(0.0f));
     }
 

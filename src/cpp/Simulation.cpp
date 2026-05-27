@@ -2,7 +2,7 @@
 
 
 const int width = 1000;
-const int height = 800;
+const int height = 1000;
 const float grid_spacing = 2.0f / height;
 
 
@@ -112,7 +112,6 @@ namespace Coco {
 
 		ContextStorage* storage = static_cast<ContextStorage*>(window->storage);
 
-
 		glfwPollEvents();
 
 		glViewport(0, 0, window->getWidth(), window->getHeight());
@@ -120,12 +119,9 @@ namespace Coco {
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		storage->Copy();
-		storage->windtunnel.Use();
-		storage->RunShader();
-		storage->Swap();
+		
 
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i <100; i++)
 		{
 			storage->Copy();
 			storage->enforcer.Use();
@@ -139,6 +135,11 @@ namespace Coco {
 		storage->advector.Use();
 		glUniform1f(storage->dt_uniform, (float)window->getDT());
 		glUniform1f(storage->advector_grid_spacing_uniform, grid_spacing);
+		storage->RunShader();
+		storage->Swap();
+
+		storage->Copy();
+		storage->windtunnel.Use();
 		storage->RunShader();
 		storage->Swap();
 		
