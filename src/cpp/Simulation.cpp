@@ -3,7 +3,8 @@
 
 const int width = 1000;
 const int height = 1000;
-const float grid_spacing = 2.0f / height;
+
+const float grid_spacing = 4.0f / height;
 
 
 namespace Coco {
@@ -48,6 +49,7 @@ namespace Coco {
 		std::string enforcer_source = read_file("shaders/enforcer.glsl");
 		enforcer.CreateCompute(enforcer_source.c_str());
 		enforcer_grid_spacing_uniform = enforcer.get_loc("grid_spacing");
+		e_dt_uniform = enforcer.get_loc("dt");
 		checker_type = enforcer.get_loc("type");
 
 		std::string advector_source = read_file("shaders/advector.glsl");
@@ -59,9 +61,9 @@ namespace Coco {
 		copier.CreateCompute(copier_source.c_str());
 
 		
-		u_velocities.Initialize(width/4, height/4, GL_R32F, GL_FLOAT);
-		v_velocities.Initialize(width/4, height/4, GL_R32F, GL_FLOAT);
-		scalar_data.Initialize(width/4, height/4, GL_RGBA32F, GL_FLOAT);
+		u_velocities.Initialize(width/2, height/2, GL_R32F, GL_FLOAT);
+		v_velocities.Initialize(width/2, height/2, GL_R32F, GL_FLOAT);
+		scalar_data.Initialize(width/2, height/2, GL_RGBA32F, GL_FLOAT);
 
 		vbo.Initialize();
 		vbo.Data(vertices, sizeof(vertices));
@@ -119,9 +121,11 @@ namespace Coco {
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		//std::cout << 1.0f / window->getDT() << std::endl;
 		
-
-		for (int i = 0; i <100; i++)
+		storage->enforcer.Use();
+		glUniform1f(storage->e_dt_uniform, window->getDT());
+		for (int i = 0; i <50; i++)
 		{
 			storage->Copy();
 			storage->enforcer.Use();

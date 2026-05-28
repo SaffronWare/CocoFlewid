@@ -150,7 +150,7 @@ int Window::getHeight()
 
 double Window::getDT()
 {
-	return dt;
+	return 3.0f*dt;
 }
 
 float Window::getAspect()

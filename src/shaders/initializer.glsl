@@ -24,14 +24,14 @@ void main()
     vec2 p = (vec2(uv) + vec2(0.5)) / dims;
 
 
-    ivec2 obstacleCenter = size / 2 -ivec2(60,0);
+    ivec2 obstacleCenter = size / 2 -ivec2(30,0);
     float obstacleRadius = 20.0;
     float obstacleD = distance(vec2(uv), vec2(obstacleCenter));
 
     float density = 0.0;
     float solidity = 0.0;
 
-    float u = 0.1f;
+    float u = 0.0f;
     float v = 0.0;
 
     if (obstacleD < obstacleRadius)

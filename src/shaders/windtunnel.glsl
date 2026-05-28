@@ -26,10 +26,15 @@ void main()
         
         if (abs(float(uv.y) / float(size.y)-0.5f) < 0.05f)
         {
-            density = 1.0;
+            density = 1.5f;
+            imageStore(uwt, uv, vec4(0.1f,0.0,0.0,0.0));
+        }
+        else 
+        {
+            imageStore(uwt, uv, vec4(0.1f,0.0,0.0,0.0));
         }
         imageStore(swt, uv, vec4(density, 0.0, 0.0, 0.0));
-        imageStore(uwt, uv, vec4(0.1f,0.0,0.0,0.0));
+        
         imageStore(vwt, uv, vec4(0.0f));
     }
 

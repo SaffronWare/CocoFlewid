@@ -7,6 +7,7 @@ layout (r32f, binding=3) uniform image2D vwt;
 layout (rgba32f, binding=4) uniform image2D srt;
 layout (rgba32f, binding=5) uniform image2D swt;
 uniform float grid_spacing;
+uniform float dt;
 uniform int type;
 
 const float overlaxation = 1.9f;
@@ -29,6 +30,13 @@ void set_u(vec2 uv, float u_v)
 	vec4 d = imageLoad(urt, ivec2(uv));
 	d.x = u_v;
 	imageStore(uwt, ivec2(uv), d);
+}
+
+void set_p(vec2 uv, float p)
+{
+	vec4 d = imageLoad(srt, ivec2(uv));
+	d.y = p;
+	imageStore(swt, ivec2(uv), d);
 }
 
 void set_v(vec2 uv, float v_v)
@@ -91,10 +99,14 @@ void main()
 				u_right -= correction_factor * (1-sld_right) / solidity;
 				v_bottom -= correction_factor * (1-sld_bottom) / solidity;
 
+				float p_change = divergence * 1.255f * grid_spacing / solidity / dt;
+
 				set_u(uv, u);
 				set_v(uv, v);
 				set_u(s_r, u_right);
 				set_v(s_b, v_bottom);
+
+				set_p(uv, p_change);
 
 				
 			}

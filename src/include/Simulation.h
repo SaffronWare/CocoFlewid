@@ -44,6 +44,7 @@ namespace Coco {
 		unsigned int scalar_uniform;
 		unsigned int checker_type;
 		unsigned int dt_uniform;
+		unsigned int e_dt_uniform;
 		unsigned int advector_grid_spacing_uniform;
 		unsigned enforcer_grid_spacing_uniform;
 		unsigned int frame = 0;
