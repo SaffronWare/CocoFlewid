@@ -210,14 +210,26 @@ void main()
 		{
 			set_v(uv,interpolatev(old_v_source, vsource));
 		}
+		else 
+		{
+			set_v(uv, 0);
+		}
 		if (solidity(usource) < 1)
 		{
 			set_u(uv,interpolateu(old_u_source, usource));
+			
+		}
+		else 
+		{
+			set_u(uv,0);
 		}
 		if (solidity(osource) < 1)
 		{
 			set_density(uv, interpolatedensity(old_source, osource));
-		}//probably density
+		}
+		else {
+			set_density(uv, 0);
+		}
 
 	}
 }

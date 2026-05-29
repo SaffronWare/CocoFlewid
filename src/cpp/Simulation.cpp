@@ -4,7 +4,9 @@
 const int width = 1000;
 const int height = 1000;
 
-const float grid_spacing = 4.0f / height;
+const int res_ratio = 2;
+
+const float grid_spacing = 2.0f * res_ratio / height;
 
 
 namespace Coco {
@@ -60,10 +62,18 @@ namespace Coco {
 		std::string copier_source = read_file("shaders/copy.glsl");
 		copier.CreateCompute(copier_source.c_str());
 
+		std::string windtunnel_source = read_file("shaders/windtunnel.glsl");
+		windtunnel.CreateCompute(windtunnel_source.c_str());
+
+		std::string writer_source = read_file("shaders/writer.glsl");
+		writer.CreateCompute(writer_source.c_str());
+		writer_position_uniform = writer.get_loc("position");
+		writer_write_uniform = writer.get_loc("writing");
+
 		
-		u_velocities.Initialize(width/2, height/2, GL_R32F, GL_FLOAT);
-		v_velocities.Initialize(width/2, height/2, GL_R32F, GL_FLOAT);
-		scalar_data.Initialize(width/2, height/2, GL_RGBA32F, GL_FLOAT);
+		u_velocities.Initialize(width/res_ratio, height/res_ratio, GL_R32F, GL_FLOAT);
+		v_velocities.Initialize(width/2, height/res_ratio, GL_R32F, GL_FLOAT);
+		scalar_data.Initialize(width/res_ratio, height/res_ratio, GL_RGBA32F, GL_FLOAT);
 
 		vbo.Initialize();
 		vbo.Data(vertices, sizeof(vertices));
@@ -79,8 +89,7 @@ namespace Coco {
 		RunShader();
 		Swap();
 
-		std::string windtunnel_source = read_file("shaders/windtunnel.glsl");
-		windtunnel.CreateCompute(windtunnel_source.c_str());
+		
 		
 
 	}
@@ -121,8 +130,27 @@ namespace Coco {
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//std::cout << 1.0f / window->getDT() << std::endl;
 		
+		storage->writer.Use();
+		if (glfwGetMouseButton(window->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+		{
+			storage->Copy();
+			storage->writer.Use();
+			double mx, my;
+			glfwGetCursorPos(window->getWindow(), &mx, &my);
+
+			glUniform1i(storage->writer_write_uniform, true);
+			glUniform2f(storage->writer_position_uniform, (float)mx/res_ratio, (float)(height-my)/res_ratio);
+			storage->RunShader();
+			storage->Swap();
+		}
+		else
+		{
+			glUniform1i(storage->writer_write_uniform, false);
+		}
+
+		//std::cout << 1.0f / window->getDT() << std::endl;
+		storage->Copy();
 		storage->enforcer.Use();
 		glUniform1f(storage->e_dt_uniform, window->getDT());
 		for (int i = 0; i <50; i++)

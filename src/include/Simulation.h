@@ -30,6 +30,7 @@ namespace Coco {
 		Shader advector;
 		Shader copier;
 		Shader windtunnel;
+		Shader writer;
 
 		
 		PPTexture u_velocities;
@@ -48,6 +49,8 @@ namespace Coco {
 		unsigned int advector_grid_spacing_uniform;
 		unsigned enforcer_grid_spacing_uniform;
 		unsigned int frame = 0;
+		unsigned int writer_position_uniform;
+		unsigned int writer_write_uniform;
 
 
 		void RunShader();
