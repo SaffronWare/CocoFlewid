@@ -24,7 +24,7 @@ void main()
     if (float(uv.x) / float(size.x) < 0.05f)
     {
         
-        if (abs(float(uv.y) / float(size.y)-0.5f) < 0.05f)
+        if (mod(float(uv.y) / float(size.y)-0.5f,0.05f) < 0.005f)
         {
             density = 1.5f;
             imageStore(uwt, uv, vec4(0.1f,0.0,0.0,0.0));
@@ -37,6 +37,7 @@ void main()
         
         imageStore(vwt, uv, vec4(0.0f));
     }
+   
 
 
 

@@ -36,7 +36,7 @@ void main()
 
     if (obstacleD < obstacleRadius)
     {
-        solidity = 1.0;
+        solidity = 0.0;
         density = 0.0;
 
 

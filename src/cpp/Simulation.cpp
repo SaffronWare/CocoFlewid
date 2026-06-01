@@ -4,7 +4,7 @@
 const int width = 1000;
 const int height = 1000;
 
-const int res_ratio = 2;
+const int res_ratio = 4;
 
 const float grid_spacing = 2.0f * res_ratio / height;
 
@@ -153,7 +153,7 @@ namespace Coco {
 		storage->Copy();
 		storage->enforcer.Use();
 		glUniform1f(storage->e_dt_uniform, window->getDT());
-		for (int i = 0; i <50; i++)
+		for (int i = 0; i <200; i++)
 		{
 			storage->Copy();
 			storage->enforcer.Use();
